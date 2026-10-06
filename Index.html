@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Reto 21 Días | Descubre tu plan</title>
+
+  <meta name="description" content="Descubre qué tipo de entrenamiento puede adaptarse mejor a tu objetivo y conoce nuestro reto de 21 días para entrenar desde casa.">
+
+  <meta name="theme-color" content="#07120c">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #193622 0%, #07120c 38%, #030605 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+      min-height: 100vh;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #b9ff3f;
+    }
+
+    .step-counter {
+      font-size: 13px;
+      color: #b7c2ba;
+      font-weight: 700;
+    }
+
+    .progress {
+      width: 100%;
+      height: 7px;
+      background: rgba(255,255,255,.12);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #67ff42, #c9ff36);
+      border-radius: 99px;
+      transition: width .35s ease;
+    }
+
+    /* SCREENS */
+
+    .screen {
+      display: none;
+      flex: 1;
+      animation: fadeIn .35s ease;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    .emoji {
+      font-size: 58px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 8vw, 46px);
+      line-height: 1.05;
+      font-weight: 950;
+      margin-bottom: 16px;
+    }
+
+    h1 span {
+      color: #a9ff38;
+    }
+
+    h2 {
+      font-size: clamp(25px, 7vw, 36px);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      color: #c7d0ca;
+      font-size: 17px;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .small-text {
+      color: #8e9c92;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 15px;
+    }
+
+    /* INPUT */
+
+    .input-box {
+      width: 100%;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 18px;
+      color: #fff;
+      font-size: 18px;
+      outline: none;
+      transition: .2s;
+      margin-bottom: 15px;
+    }
+
+    .input-box:focus {
+      border-color: #9cff38;
+      box-shadow: 0 0 0 3px rgba(156,255,56,.12);
+    }
+
+    /* OPTIONS */
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      background: rgba(255,255,255,.07);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 16px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .15s, background .15s, border-color .15s;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      border-color: #9cff38;
+      background: rgba(156,255,56,.10);
+    }
+
+    .option:active {
+      transform: scale(.98);
+    }
+
+    .option.selected {
+      background: rgba(156,255,56,.16);
+      border-color: #a9ff38;
+    }
+
+    .option small {
+      display: block;
+      color: #9da9a0;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    /* BUTTONS */
+
+    .primary {
+      width: 100%;
+      border: 0;
+      border-radius: 17px;
+      padding: 18px;
+      background: linear-gradient(135deg, #aaff36, #62ef45);
+      color: #061007;
+      font-size: 18px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(112,255,57,.18);
+      transition: transform .15s;
+      margin-top: auto;
+    }
+
+    .primary:active {
+      transform: scale(.98);
+    }
+
+    .secondary {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 17px;
+      padding: 16px;
+      background: rgba(255,255,255,.05);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 750;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    /* ANALYSIS */
+
+    .analysis-box {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px;
+      padding: 22px;
+      margin: 18px 0;
+    }
+
+    .analysis-title {
+      color: #a9ff38;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .analysis-box p {
+      color: #d0d7d2;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* CARDS */
+
+    .training-card {
+      background: linear-gradient(
+        145deg,
+        rgba(169,255,56,.12),
+        rgba(255,255,255,.05)
+      );
+      border: 1px solid rgba(169,255,56,.2);
+      border-radius: 21px;
+      padding: 22px;
+      margin-bottom: 13px;
+    }
+
+    .training-card .icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .training-card h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .training-card p {
+      color: #bdc8c0;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    /* OFFER */
+
+    .offer {
+      background:
+        linear-gradient(145deg, rgba(169,255,56,.15), rgba(255,255,255,.04));
+      border: 1px solid rgba(169,255,56,.3);
+      border-radius: 25px;
+      padding: 24px 20px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #b8ff38;
+      color: #081006;
+      padding: 7px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 950;
+      margin-bottom: 15px;
+    }
+
+    .offer h3 {
+      font-size: 27px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .offer p {
+      color: #c4cec7;
+      line-height: 1.55;
+    }
+
+    .benefits {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .benefit {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 11px;
+      color: #e1e7e3;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .check {
+      color: #a9ff38;
+      font-weight: 900;
+    }
+
+    /* FINAL */
+
+    .final-box {
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    .final-icon {
+      font-size: 65px;
+      margin-bottom: 18px;
+    }
+
+    .hotmart-btn {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      padding: 19px;
+      background: linear-gradient(135deg, #aaff36, #62ef45);
+      color: #061007;
+      font-size: 19px;
+      font-weight: 950;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 12px 35px rgba(112,255,57,.22);
+      margin-top: 20px;
+    }
+
+    .decline {
+      text-align: center;
+      padding-top: 60px;
+    }
+
+    .decline h2 {
+      margin-bottom: 14px;
+    }
+
+    /* FOOTER */
+
+    .footer {
+      text-align: center;
+      padding: 20px 0 8px;
+      color: #68756d;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    @media (min-width: 600px) {
+      .container {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+  <main class="container">
+
+    <div class="top">
+      <div class="brand">RETO 21 DÍAS</div>
+      <div class="step-counter" id="stepCounter">Inicio</div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+
+    <!-- ===================== -->
+    <!-- 0. BIENVENIDA -->
+    <!-- ===================== -->
+
+    <section class="screen active" id="screen0">
+
+      <div class="hero">
+
+        <div class="emoji">💪</div>
+
+        <h1>
+          Tu mejor versión
+          <span>empieza hoy.</span>
+        </h1>
+
+        <p class="subtitle">
+          Vamos a conocerte un poco para mostrarte
+          qué tipo de entrenamiento puede adaptarse
+          mejor a tu objetivo.
+        </p>
+
+        <input
+          id="nameInput"
+          class="input-box"
+          type="text"
+          maxlength="30"
+          placeholder="¿Cómo te llamas?"
+          autocomplete="given-name"
+        >
+
+      </div>
+
+      <button class="primary" onclick="startQuiz()">
+        Comenzar mi evaluación →
+      </button>
+
+      <p class="small-text">
+        Solo te tomará aproximadamente 1 minuto.
+      </p>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 1. OBJETIVO -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen1">
+
+      <h2>
+        Hola, <span id="name1"></span> 👋
+      </h2>
+
+      <p class="subtitle">
+        ¿Cuál es tu principal objetivo?
+      </p>
+
+      <div class="options">
+
+        <button class="option" onclick="selectOption('goal','Perder grasa y mejorar mi condición')">
+          🔥 Perder grasa
+          <small>Quiero sentirme más ligero/a y activo/a.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('goal','Ganar fuerza y músculo')">
+          💪 Ganar fuerza
+          <small>Quiero desarrollar fuerza y músculo.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('goal','Tonificar y sentirme mejor')">
+          ⚡ Tonificar
+          <small>Quiero mejorar mi condición física.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('goal','Crear el hábito de entrenar')">
+          🧠 Crear el hábito
+          <small>Quiero empezar y ser constante.</small>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 2. LUGAR -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen2">
+
+      <h2>
+        ¿Dónde entrenarías?
+      </h2>
+
+      <p class="subtitle">
+        Queremos saber qué tan sencillo será comenzar.
+      </p>
+
+      <div class="options">
+
+        <button class="option" onclick="selectOption('place','En casa')">
+          🏠 En casa
+          <small>Con poco o ningún equipo.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('place','Gimnasio')">
+          🏋️ En el gimnasio
+          <small>Tengo acceso a equipo.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('place','Ambos')">
+          🔄 Ambos
+          <small>Quiero combinar las dos opciones.</small>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 3. TIEMPO -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen3">
+
+      <h2>
+        ¿Cuánto tiempo tienes?
+      </h2>
+
+      <p class="subtitle">
+        No necesitas pasar horas entrenando.
+        Queremos conocer tu disponibilidad real.
+      </p>
+
+      <div class="options">
+
+        <button class="option" onclick="selectOption('time','15–20 minutos')">
+          ⏱️ 15–20 minutos
+          <small>Quiero algo rápido y práctico.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('time','20–30 minutos')">
+          ⏱️ 20–30 minutos
+          <small>Puedo dedicar un poco más.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('time','30–45 minutos')">
+          ⏱️ 30–45 minutos
+          <small>Tengo más tiempo disponible.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('time','Más de 45 minutos')">
+          ⏱️ Más de 45 minutos
+          <small>Quiero aprovechar más mi entrenamiento.</small>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 4. EXPERIENCIA -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen4">
+
+      <h2>
+        ¿Cuál es tu experiencia?
+      </h2>
+
+      <p class="subtitle">
+        No importa si estás comenzando.
+      </p>
+
+      <div class="options">
+
+        <button class="option" onclick="selectOption('experience','Principiante')">
+          🌱 Principiante
+          <small>Estoy empezando o llevo poco tiempo.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('experience','Intermedio')">
+          🚀 Intermedio
+          <small>Ya tengo cierta experiencia.</small>
+        </button>
+
+        <button class="option" onclick="selectOption('experience','Avanzado')">
+          🔥 Avanzado
+          <small>Entreno regularmente.</small>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 5. MOTIVACIÓN -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen5">
+
+      <h2>
+        Una última pregunta, <span id="name5"></span>.
+      </h2>
+
+      <p class="subtitle">
+        ¿Qué te motivaría más a mantenerte constante?
+      </p>
+
+      <div class="options">
+
+        <button class="option" onclick="selectOption('motivation','Ver cambios y sentirme mejor')">
+          ✨ Ver cambios y sentirme mejor
+        </button>
+
+        <button class="option" onclick="selectOption('motivation','Tener una rutina organizada')">
+          📅 Tener una rutina organizada
+        </button>
+
+        <button class="option" onclick="selectOption('motivation','Entrenar desde casa')">
+          🏠 Poder entrenar desde casa
+        </button>
+
+        <button class="option" onclick="selectOption('motivation','Sentirme más fuerte y saludable')">
+          💪 Sentirme más fuerte
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 6. RESULTADO -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen6">
+
+      <div class="hero">
+
+        <div class="emoji">🔎</div>
+
+        <h2>
+          Analizamos tus respuestas,
+          <span id="name6"></span>.
+        </h2>
+
+        <p class="subtitle">
+          Con base en lo que nos contaste, hay algo importante:
+          <strong>no necesitas complicar tu entrenamiento para comenzar.</strong>
+        </p>
+
+      </div>
+
+      <div class="analysis-box">
+
+        <div class="analysis-title">
+          Tu punto de partida
+        </div>
+
+        <p id="analysisText"></p>
+
+      </div>
+
+      <button class="primary" onclick="nextScreen()">
+        Ver cómo empezar →
+      </button>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 7. CAPACITACIÓN -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen7">
+
+      <h2>
+        Antes de comenzar...
+      </h2>
+
+      <p class="subtitle">
+        Hay 3 cosas que pueden hacer que tu proceso sea mucho más sencillo.
+      </p>
+
+      <div class="training-card">
+        <div class="icon">📅</div>
+        <h3>1. Consistencia</h3>
+        <p>
+          Una rutina sencilla que puedas mantener suele ser más útil
+          que comenzar con algo demasiado complicado.
+        </p>
+      </div>
+
+      <div class="training-card">
+        <div class="icon">🏠</div>
+        <h3>2. Entrenamiento práctico</h3>
+        <p>
+          Puedes comenzar desde casa y adaptar los ejercicios
+          a tu nivel y al tiempo que realmente tienes disponible.
+        </p>
+      </div>
+
+      <div class="training-card">
+        <div class="icon">🎯</div>
+        <h3>3. Tener un plan</h3>
+        <p>
+          Saber qué hacer cada día elimina muchas de las dudas
+          que aparecen cuando entrenas por tu cuenta.
+        </p>
+      </div>
+
+      <button class="primary" onclick="nextScreen()">
+        Continuar →
+      </button>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 8. OFERTA -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen8">
+
+      <div class="hero">
+
+        <div class="emoji">🔥</div>
+
+        <h2>
+          <span id="name8"></span>, este puede ser tu siguiente paso.
+        </h2>
+
+        <p class="subtitle">
+          Si quieres comenzar con una estructura clara,
+          tenemos una guía preparada para acompañarte durante 21 días.
+        </p>
+
+      </div>
+
+      <div class="offer">
+
+        <div class="badge">
+          RETO DE 21 DÍAS
+        </div>
+
+        <h3>
+          Tu Guía Personalizada de 21 Días
+        </h3>
+
+        <p>
+          Una propuesta organizada para ayudarte a comenzar
+          a entrenar desde casa y mantener una rutina.
+        </p>
+
+        <div class="benefits">
+
+          <div class="benefit">
+            <span class="check">✓</span>
+            <span>Rutinas organizadas para 21 días</span>
+          </div>
+
+          <div class="benefit">
+            <span class="check">✓</span>
+            <span>Entrenamientos pensados para realizar desde casa</span>
+          </div>
+
+          <div class="benefit">
+            <span class="check">✓</span>
+            <span>Ejercicios explicados de forma sencilla</span>
+          </div>
+
+          <div class="benefit">
+            <span class="check">✓</span>
+            <span>Acceso desde tu celular</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <button class="primary" onclick="nextScreen()">
+        Quiero conocer el reto →
+      </button>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 9. DECISIÓN -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen9">
+
+      <div class="final-box">
+
+        <div class="final-icon">💚</div>
+
+        <h2>
+          ¿Quieres comenzar tu reto de 21 días?
+        </h2>
+
+        <p class="subtitle">
+          Si estás listo/a para dar el siguiente paso,
+          puedes conocer la guía completa.
+        </p>
+
+        <button class="primary" onclick="goToHotmart()">
+          Sí, quiero mi guía
+        </button>
+
+        <button class="secondary" onclick="decline()">
+          No, gracias
+        </button>
+
+        <p class="small-text">
+          Tú decides si quieres continuar.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================== -->
+    <!-- 10. NO -->
+    <!-- ===================== -->
+
+    <section class="screen" id="screen10">
+
+      <div class="decline">
+
+        <div class="emoji">🙂</div>
+
+        <h2>
+          No pasa nada, <span id="name10"></span>.
+        </h2>
+
+        <p class="subtitle">
+          Gracias por responder las preguntas.
+          Cuando quieras comenzar, aquí tendrás tu punto de partida.
+        </p>
+
+        <button class="primary" onclick="restart()">
+          Volver a empezar
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <div class="footer">
+      Información de carácter general. Los resultados pueden variar
+      según cada persona. Escucha a tu cuerpo y consulta a un profesional
+      de la salud si tienes alguna condición médica.
+    </div>
+
+  </main>
+</div>
+
+
+<script>
+
+  /* ==========================================
+     CONFIGURACIÓN
+  ========================================== */
+
+  const HOTMART_URL = "https://go.hotmart.com/A107874986X";
+
+  let currentScreen = 0;
+
+  const data = {
+    name: "",
+    goal: "",
+    place: "",
+    time: "",
+    experience: "",
+    motivation: ""
+  };
+
+
+  /* ==========================================
+     MOSTRAR PANTALLA
+  ========================================== */
+
+  function showScreen(number) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+      screen.classList.remove("active");
+    });
+
+    const target = document.getElementById("screen" + number);
+
+    if (target) {
+      target.classList.add("active");
+    }
+
+    currentScreen = number;
+
+    updateProgress();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  /* ==========================================
+     PROGRESO
+  ========================================== */
+
+  function updateProgress() {
+
+    const progressBar = document.getElementById("progressBar");
+    const counter = document.getElementById("stepCounter");
+
+    if (currentScreen === 0) {
+      progressBar.style.width = "5%";
+      counter.textContent = "Inicio";
+      return;
+    }
+
+    if (currentScreen >= 1 && currentScreen <= 5) {
+
+      const percentage = ((currentScreen) / 5) * 55;
+
+      progressBar.style.width = Math.max(5, percentage) + "%";
+
+      counter.textContent = "Pregunta " + currentScreen + " de 5";
+
+      return;
+    }
+
+    if (currentScreen === 6) {
+      progressBar.style.width = "65%";
+      counter.textContent = "Tu resultado";
+      return;
+    }
+
+    if (currentScreen === 7) {
+      progressBar.style.width = "75%";
+      counter.textContent = "Tu plan";
+      return;
+    }
+
+    if (currentScreen === 8) {
+      progressBar.style.width = "85%";
+      counter.textContent = "Siguiente paso";
+      return;
+    }
+
+    if (currentScreen === 9) {
+      progressBar.style.width = "100%";
+      counter.textContent = "Decisión";
+      return;
+    }
+
+    progressBar.style.width = "100%";
+    counter.textContent = "";
+  }
+
+
+  /* ==========================================
+     COMENZAR
+  ========================================== */
+
+  function startQuiz() {
+
+    const input = document.getElementById("nameInput");
+
+    const name = input.value.trim();
+
+    if (!name) {
+      input.focus();
+      input.style.borderColor = "#ffcc33";
+
+      setTimeout(() => {
+        input.style.borderColor = "";
+      }, 1200);
+
+      return;
+    }
+
+    data.name = name.substring(0, 30);
+
+    document.getElementById("name1").textContent = data.name;
+    document.getElementById("name5").textContent = data.name;
+    document.getElementById("name6").textContent = data.name;
+    document.getElementById("name8").textContent = data.name;
+    document.getElementById("name10").textContent = data.name;
+
+    showScreen(1);
+  }
+
+
+  /* ==========================================
+     RESPUESTAS
+  ========================================== */
+
+  function selectOption(field, value) {
+
+    data[field] = value;
+
+    if (currentScreen === 1) {
+      showScreen(2);
+      return;
+    }
+
+    if (currentScreen === 2) {
+      showScreen(3);
+      return;
+    }
+
+    if (currentScreen === 3) {
+      showScreen(4);
+      return;
+    }
+
+    if (currentScreen === 4) {
+      showScreen(5);
+      return;
+    }
+
+    if (currentScreen === 5) {
+
+      generateAnalysis();
+
+      showScreen(6);
+
+      return;
+    }
+  }
+
+
+  /* ==========================================
+     ANÁLISIS PERSONALIZADO
+  ========================================== */
+
+  function generateAnalysis() {
+
+    let text = "";
+
+    if (data.place === "En casa") {
+
+      text =
+        "Tu mejor punto de partida puede ser una rutina que puedas realizar desde casa, " +
+        "sin depender de desplazamientos al gimnasio. ";
+
+    } else if (data.place === "Gimnasio") {
+
+      text =
+        "Tienes la ventaja de contar con acceso a equipo, por lo que puedes aprovechar " +
+        "una estructura de entrenamiento organizada. ";
+
+    } else {
+
+      text =
+        "Tienes flexibilidad para entrenar en diferentes lugares, " +
+        "lo que puede ayudarte a mantener la constancia. ";
+    }
+
+
+    if (data.time === "15–20 minutos") {
+
+      text +=
+        "Como dispones de poco tiempo, la clave será aprovechar sesiones " +
+        "cortas y mantener la regularidad.";
+
+    } else {
+
+      text +=
+        "Tu disponibilidad permite organizar sesiones que se adapten " +
+        "a tu ritmo y experiencia.";
+    }
+
+
+    document.getElementById("analysisText").textContent = text;
+  }
+
+
+  /* ==========================================
+     SIGUIENTE
+  ========================================== */
+
+  function nextScreen() {
+
+    if (currentScreen < 9) {
+      showScreen(currentScreen + 1);
+    }
+  }
+
+
+  /* ==========================================
+     IR A HOTMART
+     
+     IMPORTANTE:
+     No usamos window.open()
+     No usamos WhatsApp
+     No usamos app externa
+     No usamos intent://
+     No usamos deep links
+     
+     El navegador simplemente navega a Hotmart.
+  ========================================== */
+
+  function goToHotmart() {
+
+    const url = new URL(HOTMART_URL);
+
+    /*
+      Conservamos parámetros UTM si Facebook
+      los agrega a la URL de nuestro embudo.
+    */
+
+    const params = new URLSearchParams(window.location.search);
+
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term"
+    ].forEach(param => {
+
+      if (params.has(param)) {
+        url.searchParams.set(
+          param,
+          params.get(param)
+        );
+      }
+
+    });
+
+    window.location.href = url.toString();
+  }
+
+
+  /* ==========================================
+     NO GRACIAS
+  ========================================== */
+
+  function decline() {
+
+    showScreen(10);
+  }
+
+
+  /* ==========================================
+     REINICIAR
+  ========================================== */
+
+  function restart() {
+
+    data.name = "";
+    data.goal = "";
+    data.place = "";
+    data.time = "";
+    data.experience = "";
+    data.motivation = "";
+
+    document.getElementById("nameInput").value = "";
+
+    showScreen(0);
+  }
+
+
+  /* ==========================================
+     INICIO
+  ========================================== */
+
+  updateProgress();
+
+</script>
+
+</body>
+            </html>
